@@ -11,9 +11,16 @@ node_modules/
 # WhatsApp sessão
 auth/
 
+# Dados privados
+dados/usuarios/
+dados/memoria/
+
 # Logs
 dados/logs/
 
 # Sistema
 .vscode/
 .idea/
+
+# Arquivos temporários
+*.log
