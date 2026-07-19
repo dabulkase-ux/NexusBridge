@@ -1,0 +1,17 @@
+{
+  "name": "nexusbridge",
+  "version": "1.0.0",
+  "description": "NexusBridge - Ponte entre WhatsApp e IA",
+  "main": "whatsapp/index.js",
+  "scripts": {
+    "start": "node whatsapp/index.js"
+  },
+  "author": "Arthur",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.13",
+    "axios": "^1.11.0",
+    "pino": "^10.0.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

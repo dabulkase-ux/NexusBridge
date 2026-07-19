@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Ambiente
+.env
+
+# Node
+node_modules/
+
+# WhatsApp sessão
+auth/
+
+# Logs
+dados/logs/
+
+# Sistema
+.vscode/
+.idea/
