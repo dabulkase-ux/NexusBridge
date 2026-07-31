@@ -7,6 +7,10 @@ from memoria.memoria import adicionar_memoria
 from config import API_KEY, BASE_URL
 from ia.modelos import MODELOS
 from ia.prompt import SYSTEM_PROMPT
+from ia.contato_especial import (
+    eh_contato_especial,
+    contexto_contato_especial
+)
 
 from memoria.memoria import (
     gerar_contexto,
@@ -120,7 +124,7 @@ def resposta_em_ingles(texto):
 # PAYLOAD
 # --------------------------------------------------
 
-def montar_payload(modelo, mensagem, memoria):
+def montar_payload(modelo, mensagem, memoria, contexto_extra=""):
 
     mensagens = [
 
@@ -140,6 +144,16 @@ def montar_payload(modelo, mensagem, memoria):
             "content":
                 "Memória conhecida:\n\n"
                 + memoria
+
+        })
+
+    if contexto_extra:
+
+        mensagens.append({
+
+            "role": "system",
+
+            "content": contexto_extra
 
         })
 
@@ -222,7 +236,7 @@ def extrair_resposta(dados):
 # MODELO
 # --------------------------------------------------
 
-def tentar_modelo(modelo, mensagem, memoria):
+def tentar_modelo(modelo, mensagem, memoria, contexto_extra=""):
 
     estado.definir_modelo(modelo)
 
@@ -230,7 +244,8 @@ def tentar_modelo(modelo, mensagem, memoria):
 
         modelo,
         mensagem,
-        memoria
+        memoria,
+        contexto_extra
 
     )
 
@@ -273,6 +288,11 @@ def ordem_modelos():
 def responder(numero, mensagem):
 
     memoria = gerar_contexto(numero)
+    contexto_extra = ""
+
+    if eh_contato_especial(numero):
+        print(f"⭐ Contexto especial aplicado para {numero}")
+        contexto_extra = contexto_contato_especial()
 
     erros = []
 
@@ -283,18 +303,15 @@ def responder(numero, mensagem):
             print(f"🧠 Tentando: {modelo}")
 
             resposta = tentar_modelo(
-
                 modelo,
                 mensagem,
-                memoria
-
+                memoria,
+                contexto_extra
             )
 
             estado.registrar_resposta(
-
                 mensagem,
                 resposta
-
             )
 
             salvar_conversa(
@@ -303,12 +320,10 @@ def responder(numero, mensagem):
                 resposta
             )
 
-
             memoria_nova = extrair_memoria(
                 mensagem,
                 resposta
             )
-
 
             if memoria_nova:
 
@@ -316,10 +331,7 @@ def responder(numero, mensagem):
 
                     import json
 
-                    dados = json.loads(
-                        memoria_nova
-                    )
-
+                    dados = json.loads(memoria_nova)
 
                     if dados.get("guardar"):
 
@@ -333,12 +345,8 @@ def responder(numero, mensagem):
                             dados["memoria"]
                         )
 
-
                 except Exception:
-
                     pass
-
-
 
             print(f"✅ Usando: {modelo}")
 
@@ -351,15 +359,10 @@ def responder(numero, mensagem):
             print(f"❌ Falhou: {modelo}")
 
             erros.append(
-
                 f"{modelo}: {erro}"
-
             )
 
     return (
-
         "Nenhum modelo conseguiu responder.\n\n"
-
         + "\n".join(erros)
-
     )

@@ -46,6 +46,28 @@ CRIADOR_NUMERO = os.getenv(
 CRIADOR_NOME = "Arthur"
 
 
+# ==============================
+# CONTATO ESPECIAL
+# ==============================
+
+SPECIAL_CONTACT_NAME = os.getenv(
+    "SPECIAL_CONTACT_NAME",
+    ""
+).strip()
+
+
+SPECIAL_CONTACT_NUMBER = os.getenv(
+    "SPECIAL_CONTACT_NUMBER",
+    ""
+).strip()
+
+
+SPECIAL_CONTACT_CONTEXT = os.getenv(
+    "SPECIAL_CONTACT_CONTEXT",
+    ""
+).strip()
+
+
 
 # ==============================
 # SISTEMA
